@@ -14,16 +14,24 @@
 #ifndef WIN32
 
 #define HWMON_PATH \
+ "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp1_input"
+#define HWMON_ALT0  \
  "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input"
-#define HWMON_ALT \
- "/sys/class/hwmon/hwmon1/temp1_input"
+#define HWMON_ALT1  \
+ "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
 #define HWMON_ALT2 \
- "/sys/class/hwmon/hwmon0/temp1_input"
-#define HWMON_ALT3 \
  "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp2_input"
+#define HWMON_ALT3 \
+ "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input"
 #define HWMON_ALT4 \
- "/sys/class/hwmon/hwmon0/temp2_input"
+ "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp2_input"
 #define HWMON_ALT5 \
+ "/sys/class/hwmon/hwmon1/temp1_input"
+#define HWMON_ALT6 \
+ "/sys/class/hwmon/hwmon0/temp1_input"
+#define HWMON_ALT7 \
+ "/sys/class/hwmon/hwmon0/temp2_input"
+#define HWMON_ALT8 \
 "/sys/class/hwmon/hwmon0/device/temp1_input"
 
 static float linux_cputemp(int core)
@@ -33,7 +41,10 @@ static float linux_cputemp(int core)
 	uint32_t val = 0;
 
 	if (!fd)
-		fd = fopen(HWMON_ALT, "r");
+		fd = fopen(HWMON_ALT0, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT1, "r");
 
 	if (!fd)
 		fd = fopen(HWMON_ALT2, "r");
@@ -46,6 +57,15 @@ static float linux_cputemp(int core)
 
 	if (!fd)
                 fd = fopen(HWMON_ALT5, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT6, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT7, "r");
+
+	if (!fd)
+		fd = fopen(HWMON_ALT8, "r");
 
 	if (!fd)
 		return tc;
